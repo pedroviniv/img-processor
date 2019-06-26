@@ -2,7 +2,7 @@ package io.github.kieckegard.samples.marker.service;
 
 /**
  *
- * @author Pedro Arthur
+ * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
 public abstract class GenericChain<C> {
     

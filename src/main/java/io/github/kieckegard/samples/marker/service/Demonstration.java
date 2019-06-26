@@ -5,12 +5,12 @@
  */
 package io.github.kieckegard.samples.marker.service;
 
-import io.github.kieckegard.samples.marker.service.cut.centered.CenteredCutFilter;
+import io.github.kieckegard.samples.marker.service.crop.centered.CenteredCropFilterChain;
 import io.github.kieckegard.samples.marker.service.resize.ResizeModes;
 import io.github.kieckegard.samples.marker.service.resize.cover.Cover;
 import io.github.kieckegard.samples.marker.BoundingBox;
-import io.github.kieckegard.samples.marker.service.cut.CutFilter;
-import io.github.kieckegard.samples.marker.service.resize.ResizeFilter;
+import io.github.kieckegard.samples.marker.service.crop.CropFilterChain;
+import io.github.kieckegard.samples.marker.service.resize.ResizeFilterChain;
 import io.github.kieckegard.samples.marker.service.resize.cover.CoverResizeModeChain;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ public class Demonstration {
     
     private static FilterChain buildChain() {
         
-        CenteredCutFilter centeredCutFilter = new CenteredCutFilter();
+        CenteredCropFilterChain centeredCutFilter = new CenteredCropFilterChain();
         
-        CutFilter cutFilter = new CutFilter(centeredCutFilter);
+        CropFilterChain cutFilter = new CropFilterChain(centeredCutFilter);
         
         CoverResizeModeChain coverResizeModeChain = new CoverResizeModeChain();
-        ResizeFilter resizeFilter = new ResizeFilter(coverResizeModeChain);
+        ResizeFilterChain resizeFilter = new ResizeFilterChain(coverResizeModeChain);
         
         cutFilter.setNext(resizeFilter);
         

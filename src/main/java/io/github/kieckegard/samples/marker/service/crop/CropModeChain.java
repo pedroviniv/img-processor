@@ -3,34 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.resize;
+package io.github.kieckegard.samples.marker.service.crop;
 
+import io.github.kieckegard.samples.marker.service.CropFilter;
 import io.github.kieckegard.samples.marker.service.Filter;
 import io.github.kieckegard.samples.marker.service.FilterContext;
 import io.github.kieckegard.samples.marker.service.GenericChain;
-import io.github.kieckegard.samples.marker.service.ResizeFilter;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public abstract class ResizeModeChain extends GenericChain<FilterContext> {
+public abstract class CropModeChain extends GenericChain<FilterContext> {
     
-    private final String resizeMode;
+    private final String cropMode;
 
-    public ResizeModeChain(String resizeMode) {
-        this.resizeMode = resizeMode;
+    public CropModeChain(String cropMode) {
+        this.cropMode = cropMode;
     }
-
-    @Override
-    protected abstract void handle(FilterContext context);
-
+    
     @Override
     protected boolean shouldHandle(FilterContext context) {
         
-        final ResizeFilter resizeFilter = (ResizeFilter) context.getFilter();
+         CropFilter cropFilter = (CropFilter) context.getFilter();
         
-        return resizeFilter.getResizeMode().equals(resizeMode);
+        return cropFilter.getCropMode().equals(cropMode);
     }
     
 }

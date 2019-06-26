@@ -3,13 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.cut;
+package io.github.kieckegard.samples.marker.service.crop;
+
+import io.github.kieckegard.samples.marker.BoundingBox;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public class CutModes {
+public class Crop {
     
-    public static final String CENTERED = "CENTERED";
+    private BoundingBox toBeCropped;
+
+    public BoundingBox getToBeCropped() {
+        return toBeCropped;
+    }
 }

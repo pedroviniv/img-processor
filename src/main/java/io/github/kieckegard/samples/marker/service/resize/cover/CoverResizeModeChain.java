@@ -6,6 +6,7 @@
 package io.github.kieckegard.samples.marker.service.resize.cover;
 
 import io.github.kieckegard.samples.marker.BoundingBox;
+import io.github.kieckegard.samples.marker.service.CoverResizeFilter;
 import io.github.kieckegard.samples.marker.service.FilterContext;
 import io.github.kieckegard.samples.marker.service.resize.ResizeModeChain;
 import io.github.kieckegard.samples.marker.service.resize.ResizeModes;
@@ -55,7 +56,9 @@ public class CoverResizeModeChain extends ResizeModeChain {
     @Override
     protected void handle(FilterContext context) {
         
-        Cover cover = context.getFilter().getCover();
+        final CoverResizeFilter coverResizeFilter = (CoverResizeFilter) context.getFilter();
+        
+        Cover cover = coverResizeFilter.getCover();
         BufferedImage image = context.getImage();
         
         try {

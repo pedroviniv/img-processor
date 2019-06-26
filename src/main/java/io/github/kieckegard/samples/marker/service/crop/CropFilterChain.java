@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.resize;
+package io.github.kieckegard.samples.marker.service.crop;
 
 import io.github.kieckegard.samples.marker.service.FilterChain;
 import io.github.kieckegard.samples.marker.service.FilterContext;
@@ -13,20 +13,17 @@ import io.github.kieckegard.samples.marker.service.FilterTypes;
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public class ResizeFilter extends FilterChain {
+public class CropFilterChain extends FilterChain {
     
-    private ResizeModeChain resizeModeChain;
+    private final CropModeChain cropModeChain;
 
-    public ResizeFilter(final ResizeModeChain resizeModeChain) {
-        super(FilterTypes.RESIZE);
-        this.resizeModeChain = resizeModeChain;
+    public CropFilterChain(final CropModeChain cropModeChain) {
+        super(FilterTypes.CROP);
+        this.cropModeChain = cropModeChain;
     }
 
     @Override
     protected void handle(FilterContext context) {
-        
-        // chama chain de ResizeModes
-        this.resizeModeChain.handle(context);
+        this.cropModeChain.chain(context);
     }
-    
 }

@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.cut.centered;
+package io.github.kieckegard.samples.marker.service.crop.centered;
 
 import io.github.kieckegard.samples.marker.BoundingBox;
 import io.github.kieckegard.samples.marker.TopLeftCorner;
+import io.github.kieckegard.samples.marker.service.CenteredCropFilter;
 import io.github.kieckegard.samples.marker.service.FilterContext;
-import io.github.kieckegard.samples.marker.service.cut.Cut;
-import io.github.kieckegard.samples.marker.service.cut.CutFilter;
-import io.github.kieckegard.samples.marker.service.cut.CutModeChain;
-import io.github.kieckegard.samples.marker.service.cut.CutModes;
+import io.github.kieckegard.samples.marker.service.crop.Crop;
+import io.github.kieckegard.samples.marker.service.crop.CropFilterChain;
+import io.github.kieckegard.samples.marker.service.crop.CropModeChain;
+import io.github.kieckegard.samples.marker.service.crop.CropModes;
 import java.awt.image.BufferedImage;
 import org.imgscalr.Scalr;
 
@@ -19,10 +20,10 @@ import org.imgscalr.Scalr;
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public class CenteredCutFilter extends CutModeChain {
+public class CenteredCropFilterChain extends CropModeChain {
 
-    public CenteredCutFilter() {
-        super(CutModes.CENTERED);
+    public CenteredCropFilterChain() {
+        super(CropModes.CENTERED);
     }
     
     /**
@@ -78,9 +79,12 @@ public class CenteredCutFilter extends CutModeChain {
     @Override
     protected void handle(FilterContext context) {
         
+        final CenteredCropFilter centeredCropFilter = 
+                (CenteredCropFilter) context.getFilter();
+        
         BufferedImage imageToBeCropped = context.getImage();
-        Cut cut = context.getFilter().getCut();
-        BoundingBox toBeCropped = cut.getToBeCropped();
+        Crop crop = centeredCropFilter.getCrop();
+        BoundingBox toBeCropped = crop.getToBeCropped();
         
         BufferedImage croppedImage = this.cropCenter(imageToBeCropped, toBeCropped);
         context.setImage(croppedImage);
