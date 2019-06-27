@@ -9,12 +9,16 @@ package io.github.kieckegard.samples.marker.service;
  *
  * @author kieckegard
  */
+
 public class Filter {
     
     private String type;
 
     public Filter(String type) {
         this.type = type;
+    }
+
+    public Filter() {
     }
 
     public String getType() {

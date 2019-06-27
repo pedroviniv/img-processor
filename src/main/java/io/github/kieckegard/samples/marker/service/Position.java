@@ -11,8 +11,30 @@ package io.github.kieckegard.samples.marker.service;
  */
 public class Position {
     
-    private Integer width;
-    private Integer height;
+    private Integer distanceToTheTop;
+    private Integer distanceToTheLeft;
+
+    public Position() {
+    }
     
-    
+    public Integer getDistanceToTheTop() {
+        return distanceToTheTop;
+    }
+
+    public void setDistanceToTheTop(Integer distanceToTheTop) {
+        this.distanceToTheTop = distanceToTheTop;
+    }
+
+    public Integer getDistanceToTheLeft() {
+        return distanceToTheLeft;
+    }
+
+    public void setDistanceToTheLeft(Integer distanceToTheLeft) {
+        this.distanceToTheLeft = distanceToTheLeft;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" + "distanceToTheTop=" + distanceToTheTop + ", distanceToTheLeft=" + distanceToTheLeft + '}';
+    }
 }

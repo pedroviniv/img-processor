@@ -18,6 +18,9 @@ public class CropFilter extends Filter {
         this.cropMode = cropMode;
     }
 
+    public CropFilter() {
+    }
+
     public String getCropMode() {
         return cropMode;
     }

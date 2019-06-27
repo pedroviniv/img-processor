@@ -11,5 +11,5 @@ package io.github.kieckegard.samples.marker.service.resize;
  */
 public class ResizeModes {
     
-    public static final String COVER = "COVER";
+    public static final String COVER = "cover";
 }

@@ -18,6 +18,9 @@ public class ResizeFilter extends Filter {
         this.resizeMode = resizeMode;
     }
 
+    public ResizeFilter() {
+    }
+
     public String getResizeMode() {
         return resizeMode;
     }

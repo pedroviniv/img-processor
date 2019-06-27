@@ -21,11 +21,13 @@ public class CoverResizeFilter extends ResizeFilter {
         this.cover = cover;
     }
 
+    public CoverResizeFilter() {
+    }
+
     public Cover getCover() {
         return cover;
     }
 
-    @Deprecated
     public void setCover(Cover cover) {
         this.cover = cover;
     }

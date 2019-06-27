@@ -11,6 +11,6 @@ package io.github.kieckegard.samples.marker.service;
  */
 public class FilterTypes {
     
-    public static final String RESIZE = "RESIZE";
-    public static final String CROP = "CROP";
+    public static final String RESIZE = "resize";
+    public static final String CROP = "crop";
 }

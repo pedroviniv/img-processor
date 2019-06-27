@@ -21,6 +21,9 @@ public class CenteredCropFilter extends CropFilter {
         this.crop = crop;
     }
 
+    public CenteredCropFilter() {
+    }
+
     public Crop getCrop() {
         return crop;
     }

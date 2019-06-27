@@ -17,6 +17,15 @@ public class Layer {
     private List<Filter> filters;
     private Position position;
 
+    public Layer(String content, List<Filter> filters, Position position) {
+        this.content = content;
+        this.filters = filters;
+        this.position = position;
+    }
+
+    public Layer() {
+    }
+
     public String getContent() {
         return content;
     }
@@ -27,5 +36,22 @@ public class Layer {
 
     public Position getPosition() {
         return position;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setFilters(List<Filter> filters) {
+        this.filters = filters;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
+    public String toString() {
+        return "Layer{" + "content=" + content + ", filters=" + filters + ", position=" + position + '}';
     }
 }

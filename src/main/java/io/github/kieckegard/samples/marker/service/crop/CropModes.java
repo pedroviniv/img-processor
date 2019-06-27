@@ -11,5 +11,5 @@ package io.github.kieckegard.samples.marker.service.crop;
  */
 public class CropModes {
     
-    public static final String CENTERED = "CENTERED";
+    public static final String CENTERED = "centered";
 }
