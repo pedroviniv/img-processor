@@ -16,6 +16,11 @@ public class Position {
 
     public Position() {
     }
+
+    public Position(Integer distanceToTheTop, Integer distanceToTheLeft) {
+        this.distanceToTheTop = distanceToTheTop;
+        this.distanceToTheLeft = distanceToTheLeft;
+    }    
     
     public Integer getDistanceToTheTop() {
         return distanceToTheTop;

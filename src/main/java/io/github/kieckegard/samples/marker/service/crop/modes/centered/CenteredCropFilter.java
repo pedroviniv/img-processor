@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service;
+package io.github.kieckegard.samples.marker.service.crop.modes.centered;
 
+import io.github.kieckegard.samples.marker.service.crop.CropFilter;
 import io.github.kieckegard.samples.marker.service.crop.Crop;
-import io.github.kieckegard.samples.marker.service.crop.CropModes;
+import io.github.kieckegard.samples.marker.service.crop.modes.CropModes;
 
 /**
  *
@@ -22,6 +23,7 @@ public class CenteredCropFilter extends CropFilter {
     }
 
     public CenteredCropFilter() {
+        super(CropModes.CENTERED);
     }
 
     public Crop getCrop() {

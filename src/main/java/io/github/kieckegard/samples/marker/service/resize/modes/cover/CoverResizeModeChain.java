@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.resize.cover;
+package io.github.kieckegard.samples.marker.service.resize.modes.cover;
 
 import io.github.kieckegard.samples.marker.BoundingBox;
-import io.github.kieckegard.samples.marker.service.CoverResizeFilter;
 import io.github.kieckegard.samples.marker.service.FilterContext;
-import io.github.kieckegard.samples.marker.service.resize.ResizeModeChain;
-import io.github.kieckegard.samples.marker.service.resize.ResizeModes;
+import io.github.kieckegard.samples.marker.service.resize.modes.ResizeModeChain;
+import io.github.kieckegard.samples.marker.service.resize.modes.ResizeModes;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -61,6 +60,7 @@ public class CoverResizeModeChain extends ResizeModeChain {
         Cover cover = coverResizeFilter.getCover();
         BufferedImage image = context.getImage();
         
+        System.out.println("resizing cover image... ");
         try {
             BufferedImage resizedImage = this.resizeCover(image, cover.getBoundingBox());
             context.setImage(resizedImage);

@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.crop.centered;
+package io.github.kieckegard.samples.marker.service.crop.modes.centered;
 
 import io.github.kieckegard.samples.marker.BoundingBox;
 import io.github.kieckegard.samples.marker.TopLeftCorner;
-import io.github.kieckegard.samples.marker.service.CenteredCropFilter;
 import io.github.kieckegard.samples.marker.service.FilterContext;
 import io.github.kieckegard.samples.marker.service.crop.Crop;
 import io.github.kieckegard.samples.marker.service.crop.CropFilterChain;
-import io.github.kieckegard.samples.marker.service.crop.CropModeChain;
-import io.github.kieckegard.samples.marker.service.crop.CropModes;
+import io.github.kieckegard.samples.marker.service.crop.modes.CropModeChain;
+import io.github.kieckegard.samples.marker.service.crop.modes.CropModes;
 import java.awt.image.BufferedImage;
 import org.imgscalr.Scalr;
 
@@ -82,6 +81,7 @@ public class CenteredCropFilterChain extends CropModeChain {
         final CenteredCropFilter centeredCropFilter = 
                 (CenteredCropFilter) context.getFilter();
         
+        System.out.println("cropping centering image... ");
         BufferedImage imageToBeCropped = context.getImage();
         Crop crop = centeredCropFilter.getCrop();
         BoundingBox toBeCropped = crop.getToBeCropped();

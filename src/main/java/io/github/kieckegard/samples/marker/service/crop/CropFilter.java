@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service;
+package io.github.kieckegard.samples.marker.service.crop;
+
+import io.github.kieckegard.samples.marker.service.Filter;
+import io.github.kieckegard.samples.marker.service.FilterTypes;
 
 /**
  *
@@ -19,6 +22,7 @@ public class CropFilter extends Filter {
     }
 
     public CropFilter() {
+        super(FilterTypes.CROP);
     }
 
     public String getCropMode() {

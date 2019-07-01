@@ -3,19 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.resize.cover;
-
-import io.github.kieckegard.samples.marker.BoundingBox;
+package io.github.kieckegard.samples.marker.service.resize.modes;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public class Cover {
+public class ResizeModes {
     
-    private BoundingBox boundingBox;
-
-    public BoundingBox getBoundingBox() {
-        return boundingBox;
-    }
+    public static final String COVER = "cover";
 }

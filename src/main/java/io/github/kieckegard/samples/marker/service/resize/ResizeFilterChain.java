@@ -5,6 +5,7 @@
  */
 package io.github.kieckegard.samples.marker.service.resize;
 
+import io.github.kieckegard.samples.marker.service.resize.modes.ResizeModeChain;
 import io.github.kieckegard.samples.marker.service.FilterChain;
 import io.github.kieckegard.samples.marker.service.FilterContext;
 import io.github.kieckegard.samples.marker.service.FilterTypes;
@@ -26,7 +27,7 @@ public class ResizeFilterChain extends FilterChain {
     protected void handle(FilterContext context) {
         
         // chama chain de ResizeModes
-        this.resizeModeChain.handle(context);
+        this.resizeModeChain.chain(context);
     }
     
 }

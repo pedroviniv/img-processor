@@ -5,11 +5,14 @@
  */
 package io.github.kieckegard.samples.marker.service;
 
+import io.github.kieckegard.samples.marker.service.crop.modes.centered.CenteredCropFilter;
+import io.github.kieckegard.samples.marker.service.crop.CropFilter;
+import io.github.kieckegard.samples.marker.service.resize.modes.cover.CoverResizeFilter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
-import io.github.kieckegard.samples.marker.service.crop.CropModes;
-import io.github.kieckegard.samples.marker.service.resize.ResizeModes;
+import io.github.kieckegard.samples.marker.service.crop.modes.CropModes;
+import io.github.kieckegard.samples.marker.service.resize.modes.ResizeModes;
 
 /**
  *

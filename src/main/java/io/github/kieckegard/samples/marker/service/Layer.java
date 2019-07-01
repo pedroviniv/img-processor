@@ -16,11 +16,13 @@ public class Layer {
     private String content;
     private List<Filter> filters;
     private Position position;
+    private Boolean behind = false;
 
-    public Layer(String content, List<Filter> filters, Position position) {
+    public Layer(String content, List<Filter> filters, Position position, Boolean behind) {
         this.content = content;
         this.filters = filters;
         this.position = position;
+        this.behind = behind;
     }
 
     public Layer() {
@@ -50,8 +52,19 @@ public class Layer {
         this.position = position;
     }
 
+    public Boolean getBehind() {
+        return behind;
+    }
+
+    public void setBehind(Boolean behind) {
+        if (behind == null) {
+            return;
+        }
+        this.behind = behind;
+    }
+
     @Override
     public String toString() {
-        return "Layer{" + "content=" + content + ", filters=" + filters + ", position=" + position + '}';
+        return "Layer{" + "content=" + content + ", filters=" + filters + ", position=" + position + ", behind=" + behind + '}';
     }
 }

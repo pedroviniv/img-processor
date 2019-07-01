@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.resize;
+package io.github.kieckegard.samples.marker.service.crop.modes;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public class ResizeModes {
+public class CropModes {
     
-    public static final String COVER = "cover";
+    public static final String CENTERED = "centered";
 }

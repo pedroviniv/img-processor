@@ -15,7 +15,18 @@ public class Crop {
     
     private BoundingBox toBeCropped;
 
+    public Crop(BoundingBox toBeCropped) {
+        this.toBeCropped = toBeCropped;
+    }
+
+    public Crop() {
+    }
+
     public BoundingBox getToBeCropped() {
         return toBeCropped;
+    }
+
+    public void setToBeCropped(BoundingBox toBeCropped) {
+        this.toBeCropped = toBeCropped;
     }
 }

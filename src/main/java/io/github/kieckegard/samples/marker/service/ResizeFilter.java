@@ -19,6 +19,7 @@ public class ResizeFilter extends Filter {
     }
 
     public ResizeFilter() {
+        super(FilterTypes.RESIZE);
     }
 
     public String getResizeMode() {

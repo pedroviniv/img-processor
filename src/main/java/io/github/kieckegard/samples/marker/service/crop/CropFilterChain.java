@@ -5,6 +5,7 @@
  */
 package io.github.kieckegard.samples.marker.service.crop;
 
+import io.github.kieckegard.samples.marker.service.crop.modes.CropModeChain;
 import io.github.kieckegard.samples.marker.service.FilterChain;
 import io.github.kieckegard.samples.marker.service.FilterContext;
 import io.github.kieckegard.samples.marker.service.FilterTypes;

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service;
+package io.github.kieckegard.samples.marker.service.resize.modes.cover;
 
-import io.github.kieckegard.samples.marker.service.resize.ResizeModes;
-import io.github.kieckegard.samples.marker.service.resize.cover.Cover;
+import io.github.kieckegard.samples.marker.service.ResizeFilter;
+import io.github.kieckegard.samples.marker.service.resize.modes.ResizeModes;
+import io.github.kieckegard.samples.marker.service.resize.modes.cover.Cover;
 
 /**
  *
@@ -22,6 +23,7 @@ public class CoverResizeFilter extends ResizeFilter {
     }
 
     public CoverResizeFilter() {
+        super(ResizeModes.COVER);
     }
 
     public Cover getCover() {

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.github.kieckegard.samples.marker.service.crop;
+package io.github.kieckegard.samples.marker.service.crop.modes;
 
-import io.github.kieckegard.samples.marker.service.CropFilter;
+import io.github.kieckegard.samples.marker.service.crop.CropFilter;
 import io.github.kieckegard.samples.marker.service.Filter;
 import io.github.kieckegard.samples.marker.service.FilterContext;
 import io.github.kieckegard.samples.marker.service.GenericChain;
