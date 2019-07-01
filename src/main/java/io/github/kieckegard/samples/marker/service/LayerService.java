@@ -9,7 +9,6 @@ import io.github.kieckegard.samples.marker.service.filter.FilterService;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -52,8 +51,10 @@ public class LayerService {
      *
      * @param first
      * @param second
+     * @return container instancia de {@link Container} contendo o resultado
+     * da mesclagem entre as camadas passadas por parametro.
      */
-    public void merge(ProcessedLayer first, ProcessedLayer second) {
+    public Container merge(ProcessedLayer first, ProcessedLayer second) {
 
         Layer secondLayer = second.getLayer();
         
@@ -76,7 +77,7 @@ public class LayerService {
         
         // testSave("merged", container.getContainerContent());
 
-        second.setLoadedImage(container.getContainerContent());
+        return container;
     }
     
     private String randomFileName() {
@@ -90,8 +91,7 @@ public class LayerService {
             Logger.getLogger(LayerService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     /**
      * Processa, de maneira assincrona, o conjunto de layers dentro da requisiçao passada.
      * @param request estrutura de dados contendo as camadas, seus filtros, etc a ser processado.
@@ -117,6 +117,11 @@ public class LayerService {
                 .map(this.layerLoader)
                 .collect(Collectors.toList());
 
+        /**
+         * Processa a primeira layer pois quando uma lista tem apenas um elemento,
+         * a API de streams nao chega nem a invocar o callback registrado
+         * no reduce
+         */
         final ProcessedLayer processedLayer = processedLayers.get(0);
         final BufferedImage firstLayerImage = this.filterService.handle(processedLayer);
         processedLayer.setLoadedImage(firstLayerImage);
@@ -124,6 +129,12 @@ public class LayerService {
         // just for testing purpose
         // this.testSave(this.randomFileName(), firstLayerImage);
 
+        /**
+         * Invocando o serviço de filtros para processar o conteudo de cada camada,
+         * a partir da segunda camada, o resultado eh mesclado com a primeira, depois o
+         * resultado da terceira eh mesclado com a segunda e assim por diante, por isso o uso
+         * do reducer
+         */
         Optional<ProcessedLayer> processedLayersResult = processedLayers.stream()
                 .reduce((accumulated, next) -> {
 
@@ -134,13 +145,18 @@ public class LayerService {
                     // just for testing purpose
                     // this.testSave(this.randomFileName(), nextProcessedImage);
                     
-                    this.merge(accumulated, next);
+                    Container merged = this.merge(accumulated, next);
+                    next.setLoadedImage(merged.getContainerContent());
 
                     return next;
                 });
 
         BufferedImage finalResult = processedLayersResult.get().getLoadedImage();
         
+        /**
+         * Criando a resposta com a instancia de {@link BufferedImage} apos a mesclagem de todas
+         * as camadas processadas.
+         */
         return Response.builder()
                 .contentName(request.getContentName())
                 .content(finalResult)

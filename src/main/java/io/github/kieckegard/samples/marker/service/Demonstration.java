@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -43,7 +44,7 @@ public class Demonstration {
         return cutFilter;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 
         final String json = "{\n" +
 "  \"contentName\": \"marker.png\",\n" +
@@ -129,12 +130,14 @@ public class Demonstration {
         LayerService layerService = new LayerService(filterService, layerLoader);
         
         List<Request> cem = new ArrayList<>();
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 10000; i++) {
             Request request1 = deserializer.deserialize(json, Request.class);
             cem.add(request1);
         }
         
-        cem.parallelStream()
+        ForkJoinPool customThreadPool = new ForkJoinPool(2);
+        customThreadPool.submit(() -> {
+            cem.parallelStream()
                 .forEach(r -> {
                     
                     try {
@@ -142,7 +145,7 @@ public class Demonstration {
                         String contentName = response.getContentName();
                         BufferedImage content = response.getContent();
 
-                        ImageIO.write(content, "PNG", new File(UUID.randomUUID().toString()+contentName));
+                        ImageIO.write(content, "PNG", new File("out/" + UUID.randomUUID().toString()+contentName));
 
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,18 +155,6 @@ public class Demonstration {
                         Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        
-        /*try {
-            Response response = layerService.handle(request).get();
-            String contentName = response.getContentName();
-            BufferedImage content = response.getContent();
-            
-            ImageIO.write(content, "PNG", new File(UUID.randomUUID().toString()+contentName));
-           
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ExecutionException ex) {
-            Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }).get();
     }
 }
