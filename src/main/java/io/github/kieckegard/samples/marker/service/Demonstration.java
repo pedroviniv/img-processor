@@ -43,7 +43,74 @@ public class Demonstration {
 
     public static void main(String[] args) throws IOException {
 
-        final String json = "{ \"contentName\": \"marker.png\", \"layers\": [ { \"content\": \"https://www.iconsdb.com/icons/download/red/map-marker-2-512.png\" }, { \"behind\": true, \"content\": \"https://66.media.tumblr.com/6b10d3c75c34af5d8ea5bb29623430c6/tumblr_ouk6jozjaH1tiivhqo1_250.gif\", \"filters\": [ { \"type\": \"resize\", \"resizeMode\": \"cover\", \"cover\": { \"boundingBox\": { \"width\": 263, \"height\": 263 } } }, { \"type\": \"crop\", \"cropMode\": \"centered\", \"crop\": { \"toBeCropped\": { \"width\": 263, \"height\": 263 } } } ], \"position\": { \"distanceToTheTop\": 61, \"distanceToTheLeft\": 129 } } ] }";
+        final String json = "{\n" +
+"  \"contentName\": \"marker.png\",\n" +
+"  \"layers\": [\n" +
+"    {\n" +
+"      \"content\": \"https://www.iconsdb.com/icons/download/red/map-marker-2-512.png\"\n" +
+"    },\n" +
+"    {\n" +
+"      \"behind\": true,\n" +
+"      \"content\": \"https://66.media.tumblr.com/6b10d3c75c34af5d8ea5bb29623430c6/tumblr_ouk6jozjaH1tiivhqo1_250.gif\",\n" +
+"      \"filters\": [\n" +
+"        {\n" +
+"          \"type\": \"resize\",\n" +
+"          \"resizeMode\": \"cover\",\n" +
+"          \"cover\": {\n" +
+"            \"boundingBox\": {\n" +
+"              \"width\": 255,\n" +
+"              \"height\": 132\n" +
+"            }\n" +
+"          }\n" +
+"        },\n" +
+"        {\n" +
+"          \"type\": \"crop\",\n" +
+"          \"cropMode\": \"centered\",\n" +
+"          \"crop\": {\n" +
+"            \"toBeCropped\": {\n" +
+"              \"width\": 255,\n" +
+"              \"height\": 132\n" +
+"            }\n" +
+"          }\n" +
+"        }\n" +
+"      ],\n" +
+"      \"position\": {\n" +
+"        \"distanceToTheTop\": 61,\n" +
+"        \"distanceToTheLeft\": 129\n" +
+"      }\n" +
+"    },\n" +
+"    {\n" +
+"      \"behind\": true,\n" +
+"      \"content\": \"https://i.ytimg.com/vi/bG_p3wMWddI/maxresdefault.jpg\",\n" +
+"      \"filters\": [\n" +
+"        {\n" +
+"          \"type\": \"resize\",\n" +
+"          \"resizeMode\": \"cover\",\n" +
+"          \"cover\": {\n" +
+"            \"boundingBox\": {\n" +
+"              \"width\": 255,\n" +
+"              \"height\": 132\n" +
+"            }\n" +
+"          }\n" +
+"        },\n" +
+"        {\n" +
+"          \"type\": \"crop\",\n" +
+"          \"cropMode\": \"centered\",\n" +
+"          \"crop\": {\n" +
+"            \"toBeCropped\": {\n" +
+"              \"width\": 255,\n" +
+"              \"height\": 132\n" +
+"            }\n" +
+"          }\n" +
+"        }\n" +
+"      ],\n" +
+"      \"position\": {\n" +
+"        \"distanceToTheTop\": 193,\n" +
+"        \"distanceToTheLeft\": 129\n" +
+"      }\n" +
+"    }\n" +
+"  ]\n" +
+"}";
 
         JsonDeserializer deserializer = new JsonDeserializer();
 
@@ -56,8 +123,8 @@ public class Demonstration {
         List<Layer> layers = request.getLayers();
         
         FilterService filterService = new FilterService(filterChain);
-
-        LayerService layerService = new LayerService(filterService);
+        LayerLoader layerLoader = new LayerLoader();
+        LayerService layerService = new LayerService(filterService, layerLoader);
         
         try {
             Response response = layerService.handle(request).get();

@@ -26,34 +26,11 @@ import javax.imageio.ImageIO;
 public class LayerService {
 
     private final FilterService filterService;
+    private final LayerLoader layerLoader;
 
-    public LayerService(FilterService filterService) {
+    public LayerService(FilterService filterService, LayerLoader layerLoader) {
         this.filterService = filterService;
-    }
-
-    private BufferedImage load(final String url) throws IOException {
-        URL urlInstance = new URL(url);
-        BufferedImage loadedContent = ImageIO.read(urlInstance);
-        return loadedContent;
-    }
-
-    /**
-     * Carrega o conteudo de uma camada.
-     * @param layer
-     * @return 
-     */
-    private ProcessedLayer load(final Layer layer) {
-
-        try {
-            String contentUrl = layer.getContent();
-            BufferedImage content = this.load(contentUrl);
-            return ProcessedLayer.builder()
-                    .layer(layer)
-                    .loadedImage(content)
-                    .build();
-        } catch (IOException ex) {
-            throw new LayerLoadingException(layer.getContent(), ex);
-        }
+        this.layerLoader = layerLoader;
     }
 
     public Container createContainer(BufferedImage img) {
@@ -136,8 +113,8 @@ public class LayerService {
             throw new EmptyLayersException("Voce precisa passar pelo menos uma layer.");
         }
         
-        List<ProcessedLayer> processedLayers = layers.stream()
-                .map(this::load)
+        List<ProcessedLayer> processedLayers = layers.parallelStream()
+                .map(this.layerLoader)
                 .collect(Collectors.toList());
 
         final ProcessedLayer processedLayer = processedLayers.get(0);
