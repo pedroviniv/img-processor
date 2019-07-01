@@ -15,7 +15,9 @@ import io.github.kieckegard.samples.marker.service.filter.resize.modes.cover.Cov
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,17 +128,42 @@ public class Demonstration {
         LayerLoader layerLoader = new LayerLoader();
         LayerService layerService = new LayerService(filterService, layerLoader);
         
-        try {
+        List<Request> cem = new ArrayList<>();
+        for(int i = 0; i < 100; i++) {
+            Request request1 = deserializer.deserialize(json, Request.class);
+            cem.add(request1);
+        }
+        
+        cem.parallelStream()
+                .forEach(r -> {
+                    
+                    try {
+                        Response response = layerService.handle(request).get();
+                        String contentName = response.getContentName();
+                        BufferedImage content = response.getContent();
+
+                        ImageIO.write(content, "PNG", new File(UUID.randomUUID().toString()+contentName));
+
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+        
+        /*try {
             Response response = layerService.handle(request).get();
             String contentName = response.getContentName();
             BufferedImage content = response.getContent();
             
-            ImageIO.write(content, "PNG", new File(contentName));
+            ImageIO.write(content, "PNG", new File(UUID.randomUUID().toString()+contentName));
            
         } catch (InterruptedException ex) {
             Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ExecutionException ex) {
             Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
 }
