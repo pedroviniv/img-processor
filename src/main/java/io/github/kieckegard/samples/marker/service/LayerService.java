@@ -5,6 +5,7 @@
  */
 package io.github.kieckegard.samples.marker.service;
 
+import io.github.kieckegard.samples.marker.service.filter.FilterService;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -29,17 +31,22 @@ public class LayerService {
         this.filterService = filterService;
     }
 
-    private static BufferedImage load(final String url) throws IOException {
+    private BufferedImage load(final String url) throws IOException {
         URL urlInstance = new URL(url);
         BufferedImage loadedContent = ImageIO.read(urlInstance);
         return loadedContent;
     }
 
+    /**
+     * Carrega o conteudo de uma camada.
+     * @param layer
+     * @return 
+     */
     private ProcessedLayer load(final Layer layer) {
 
         try {
             String contentUrl = layer.getContent();
-            BufferedImage content = load(contentUrl);
+            BufferedImage content = this.load(contentUrl);
             return ProcessedLayer.builder()
                     .layer(layer)
                     .loadedImage(content)
@@ -73,8 +80,8 @@ public class LayerService {
 
         Layer secondLayer = second.getLayer();
         
-        testSave("first-to-merge", first.getLoadedImage());
-        testSave("second-to-merge", second.getLoadedImage());
+        // testSave("first-to-merge", first.getLoadedImage());
+        // testSave("second-to-merge", second.getLoadedImage());
 
         Container container = this.createContainer(first.getLoadedImage());
 
@@ -82,7 +89,7 @@ public class LayerService {
 
             container.draw(second.getLoadedImage(), secondLayer.getPosition());
             
-            testSave("second-with-first-size", container.getContainerContent());
+            // testSave("second-with-first-size", container.getContainerContent());
             
             container.draw(first.getLoadedImage(), new Position(0, 0));
         } else {
@@ -90,7 +97,7 @@ public class LayerService {
             container.draw(second.getLoadedImage(), secondLayer.getPosition());
         }
         
-        testSave("merged", container.getContainerContent());
+        // testSave("merged", container.getContainerContent());
 
         second.setLoadedImage(container.getContainerContent());
     }
@@ -106,24 +113,39 @@ public class LayerService {
             Logger.getLogger(LayerService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    /**
+     * Processa, de maneira assincrona, o conjunto de layers dentro da requisiçao passada.
+     * @param request estrutura de dados contendo as camadas, seus filtros, etc a ser processado.
+     * @return
+     * @throws LayerLoadingException caso haja algum problema durante o carregamento do conteudo da camada.
+     * @throws EmptyLayersException  caso nao tenha sido passado quaisquer camadas para processamento.
+     */
+    public CompletableFuture<Response> handle(Request request) throws LayerLoadingException, EmptyLayersException {
+        return CompletableFuture.supplyAsync(() -> {
+           return this.process(request); 
+        });
+    }
 
-    public void process(List<Layer> layers) throws IOException {
+    private Response process(Request request) throws LayerLoadingException, EmptyLayersException {
+        
+        final List<Layer> layers = request.getLayers();
 
+        if (layers == null || layers.isEmpty()) {
+            throw new EmptyLayersException("Voce precisa passar pelo menos uma layer.");
+        }
+        
         List<ProcessedLayer> processedLayers = layers.stream()
                 .map(this::load)
                 .collect(Collectors.toList());
 
-        if (processedLayers.isEmpty()) {
-            return;
-        }
-
         final ProcessedLayer processedLayer = processedLayers.get(0);
         final BufferedImage firstLayerImage = this.filterService.handle(processedLayer);
+        processedLayer.setLoadedImage(firstLayerImage);
 
         // just for testing purpose
-        this.testSave(this.randomFileName(), firstLayerImage);
-
-        processedLayer.setLoadedImage(firstLayerImage);
+        // this.testSave(this.randomFileName(), firstLayerImage);
 
         Optional<ProcessedLayer> processedLayersResult = processedLayers.stream()
                 .reduce((accumulated, next) -> {
@@ -133,7 +155,7 @@ public class LayerService {
                     next.setLoadedImage(nextProcessedImage);
                     
                     // just for testing purpose
-                    this.testSave(this.randomFileName(), nextProcessedImage);
+                    // this.testSave(this.randomFileName(), nextProcessedImage);
                     
                     this.merge(accumulated, next);
 
@@ -141,6 +163,10 @@ public class LayerService {
                 });
 
         BufferedImage finalResult = processedLayersResult.get().getLoadedImage();
-        ImageIO.write(finalResult, "PNG", new File("final-result.png"));
+        
+        return Response.builder()
+                .contentName(request.getContentName())
+                .content(finalResult)
+                .build();
     }
 }

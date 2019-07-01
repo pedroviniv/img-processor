@@ -5,15 +5,18 @@
  */
 package io.github.kieckegard.samples.marker.service;
 
-import io.github.kieckegard.samples.marker.service.resize.modes.cover.CoverResizeFilter;
-import io.github.kieckegard.samples.marker.service.crop.modes.centered.CenteredCropFilterChain;
-import io.github.kieckegard.samples.marker.service.crop.CropFilterChain;
-import io.github.kieckegard.samples.marker.service.resize.ResizeFilterChain;
-import io.github.kieckegard.samples.marker.service.resize.modes.cover.CoverResizeModeChain;
+import io.github.kieckegard.samples.marker.service.common.JsonDeserializer;
+import io.github.kieckegard.samples.marker.service.filter.FilterChain;
+import io.github.kieckegard.samples.marker.service.filter.FilterService;
+import io.github.kieckegard.samples.marker.service.filter.crop.modes.centered.CenteredCropFilterChain;
+import io.github.kieckegard.samples.marker.service.filter.crop.CropFilterChain;
+import io.github.kieckegard.samples.marker.service.filter.resize.ResizeFilterChain;
+import io.github.kieckegard.samples.marker.service.filter.resize.modes.cover.CoverResizeModeChain;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -38,33 +41,9 @@ public class Demonstration {
         return cutFilter;
     }
 
-    private static FilterContext context(Filter filter, String content) {
-        return null;
-    }
-
-    private static BufferedImage load(final String url) throws IOException {
-        URL urlInstance = new URL(url);
-        BufferedImage loadedContent = ImageIO.read(urlInstance);
-        return loadedContent;
-    }
-
-    private static ProcessedLayer load(final Layer layer) {
-
-        try {
-            String contentUrl = layer.getContent();
-            BufferedImage content = load(contentUrl);
-            return ProcessedLayer.builder()
-                    .layer(layer)
-                    .loadedImage(content)
-                    .build();
-        } catch (IOException ex) {
-            throw new LayerLoadingException(layer.getContent(), ex);
-        }
-    }
-
     public static void main(String[] args) throws IOException {
 
-        final String json = "{ \"layers\": [ { \"content\": \"https://www.iconsdb.com/icons/download/red/map-marker-2-512.png\" }, { \"behind\": true, \"content\": \"https://66.media.tumblr.com/6b10d3c75c34af5d8ea5bb29623430c6/tumblr_ouk6jozjaH1tiivhqo1_250.gif\", \"filters\": [ { \"type\": \"resize\", \"resizeMode\": \"cover\", \"cover\": { \"boundingBox\": { \"width\": 263, \"height\": 263 } } }, { \"type\": \"crop\", \"cropMode\": \"centered\", \"crop\": { \"toBeCropped\": { \"width\": 263, \"height\": 263 } } } ], \"position\": { \"distanceToTheTop\": 61, \"distanceToTheLeft\": 129 } } ] }";
+        final String json = "{ \"contentName\": \"marker.png\", \"layers\": [ { \"content\": \"https://www.iconsdb.com/icons/download/red/map-marker-2-512.png\" }, { \"behind\": true, \"content\": \"https://66.media.tumblr.com/6b10d3c75c34af5d8ea5bb29623430c6/tumblr_ouk6jozjaH1tiivhqo1_250.gif\", \"filters\": [ { \"type\": \"resize\", \"resizeMode\": \"cover\", \"cover\": { \"boundingBox\": { \"width\": 263, \"height\": 263 } } }, { \"type\": \"crop\", \"cropMode\": \"centered\", \"crop\": { \"toBeCropped\": { \"width\": 263, \"height\": 263 } } } ], \"position\": { \"distanceToTheTop\": 61, \"distanceToTheLeft\": 129 } } ] }";
 
         JsonDeserializer deserializer = new JsonDeserializer();
 
@@ -72,10 +51,6 @@ public class Demonstration {
 
         System.out.println(request);
 
-        // List<Filter> filters = request.getLayers().get(1).getFilters();
-        // ResizeFilter resize = (ResizeFilter) filters.get(0);
-        // CoverResizeFilter coverResizeFilter = (CoverResizeFilter) resize;
-        // System.out.println(coverResizeFilter.getCover());
         FilterChain filterChain = buildChain();
 
         List<Layer> layers = request.getLayers();
@@ -83,19 +58,18 @@ public class Demonstration {
         FilterService filterService = new FilterService(filterChain);
 
         LayerService layerService = new LayerService(filterService);
-        layerService.process(layers);
         
-        /*List<Layer> layers = new ArrayList<>();
-        layers.forEach(l -> {
-        List<Filter> filters = l.getFilters();
-        filters.stream()
-        .map(f -> {
-        return context(f, l.getContent());
-        })
-        .reduce((accumulated, next) -> {
-        filterChain.chain(next);
-        return next;
-        });
-        });*/
+        try {
+            Response response = layerService.handle(request).get();
+            String contentName = response.getContentName();
+            BufferedImage content = response.getContent();
+            
+            ImageIO.write(content, "PNG", new File(contentName));
+           
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(Demonstration.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

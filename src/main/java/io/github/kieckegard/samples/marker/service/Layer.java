@@ -5,6 +5,7 @@
  */
 package io.github.kieckegard.samples.marker.service;
 
+import io.github.kieckegard.samples.marker.service.filter.Filter;
 import java.util.List;
 
 /**

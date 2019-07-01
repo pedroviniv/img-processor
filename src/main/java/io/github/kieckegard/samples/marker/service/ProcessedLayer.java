@@ -8,7 +8,9 @@ package io.github.kieckegard.samples.marker.service;
 import java.awt.image.BufferedImage;
 
 /**
- *
+ * Representa uma camada processada, ou seja, com o conteudo
+ * da url ja baixado e carregado no atributo loadedImage.
+ * 
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
 public class ProcessedLayer {

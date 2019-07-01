@@ -21,7 +21,34 @@ public class Position {
         this.distanceToTheTop = distanceToTheTop;
         this.distanceToTheLeft = distanceToTheLeft;
     }    
-    
+
+    public static class Builder {
+
+        private Integer distanceToTheTop;
+        private Integer distanceToTheLeft;
+
+        private Builder() {
+        }
+
+        public Builder distanceToTheTop(final Integer value) {
+            this.distanceToTheTop = value;
+            return this;
+        }
+
+        public Builder distanceToTheLeft(final Integer value) {
+            this.distanceToTheLeft = value;
+            return this;
+        }
+
+        public Position build() {
+            return new io.github.kieckegard.samples.marker.service.Position(distanceToTheTop, distanceToTheLeft);
+        }
+    }
+
+    public static Position.Builder builder() {
+        return new Position.Builder();
+    }
+
     public Integer getDistanceToTheTop() {
         return distanceToTheTop;
     }

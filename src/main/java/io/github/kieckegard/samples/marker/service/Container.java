@@ -15,8 +15,8 @@ import java.awt.image.BufferedImage;
  */
 public class Container {
     
-    private Graphics2D graphics2DContainer;
-    private BufferedImage containerContent;
+    private final Graphics2D graphics2DContainer;
+    private final BufferedImage containerContent;
 
     private Container(Graphics2D graphics2D, BufferedImage containerContent) {
         this.graphics2DContainer = graphics2D;

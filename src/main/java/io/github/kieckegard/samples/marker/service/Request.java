@@ -8,19 +8,21 @@ package io.github.kieckegard.samples.marker.service;
 import java.util.List;
 
 /**
- *
+ * Representa uma requisiçao de um client, que passa uma lista de layers,
+ * cada uma com seus filtros, posiçao, conteudo, etc.
  * @author kieckegard
  */
 public class Request {
     
     private List<Layer> layers;
+    private String contentName;
 
-    public Request(List<Layer> layers) {
+    public Request(final List<Layer> layers, final String contentName) {
         this.layers = layers;
+        this.contentName = contentName;
     }
 
-    public Request() {
-    }
+    public Request() {}
 
     public List<Layer> getLayers() {
         return layers;
@@ -30,8 +32,16 @@ public class Request {
         this.layers = layers;
     }
 
+    public String getContentName() {
+        return contentName;
+    }
+
+    public void setContentName(String contentName) {
+        this.contentName = contentName;
+    }
+
     @Override
     public String toString() {
-        return "Request{" + "layers=" + layers + '}';
+        return "Request{" + "layers=" + layers + ", contentName=" + contentName + '}';
     }
 }
