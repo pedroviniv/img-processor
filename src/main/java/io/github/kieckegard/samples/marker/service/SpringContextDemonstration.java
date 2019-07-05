@@ -6,48 +6,33 @@
 package io.github.kieckegard.samples.marker.service;
 
 import io.github.kieckegard.samples.marker.service.common.JsonDeserializer;
-import io.github.kieckegard.samples.marker.service.filter.FilterChain;
-import io.github.kieckegard.samples.marker.service.filter.FilterService;
-import io.github.kieckegard.samples.marker.service.filter.crop.modes.centered.CenteredCropFilterChain;
-import io.github.kieckegard.samples.marker.service.filter.crop.CropFilterChain;
-import io.github.kieckegard.samples.marker.service.filter.resize.ResizeFilterChain;
-import io.github.kieckegard.samples.marker.service.filter.resize.modes.cover.CoverResizeModeChain;
-import io.github.kieckegard.samples.marker.service.gfx.BufferedImageConverter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
-public class Demonstration {
-
-    private static FilterChain buildChain() {
-
-        CenteredCropFilterChain centeredCutFilter = new CenteredCropFilterChain();
-
-        CropFilterChain cutFilter = new CropFilterChain(centeredCutFilter);
-
-        CoverResizeModeChain coverResizeModeChain = new CoverResizeModeChain();
-        ResizeFilterChain resizeFilter = new ResizeFilterChain(coverResizeModeChain);
-
-        cutFilter.setNext(resizeFilter);
-
-        return cutFilter;
-    }
-
-    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
-
+public class SpringContextDemonstration {
+    
+    public static final String BASE_PKG = "io.github.kieckegard.samples.marker.service";
+    
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(BASE_PKG);
+        LayerService layerService = ctx.getBean(LayerService.class);
+        
         final String json = "{\n" +
 "  \"contentName\": \"marker.png\",\n" +
 "  \"layers\": [\n" +
@@ -120,18 +105,6 @@ public class Demonstration {
         JsonDeserializer deserializer = new JsonDeserializer();
 
         Request request = deserializer.deserialize(json, Request.class);
-
-        System.out.println(request);
-
-        FilterChain filterChain = buildChain();
-
-        List<Layer> layers = request.getLayers();
-        
-        BufferedImageConverter bufferedImageConverter = new BufferedImageConverter();
-        
-        FilterService filterService = new FilterService(filterChain);
-        LayerLoader layerLoader = new LayerLoader(bufferedImageConverter);
-        LayerService layerService = new LayerService(filterService, layerLoader);
         
         List<Request> cem = new ArrayList<>();
         for(int i = 0; i < 10000; i++) {

@@ -10,16 +10,22 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
+
+@Service
 public class FilterService {
     
     private final FilterChain filterChain;
 
-    public FilterService(final FilterChain filterChain) {
+    @Autowired
+    public FilterService(@Qualifier(FilterProvider.DEFAULT_FILTER) final FilterChain filterChain) {
         this.filterChain = filterChain;
     }
     

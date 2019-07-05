@@ -15,11 +15,14 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.imgscalr.Scalr;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
+
+@Component(ResizeModes.COVER)
 public class CoverResizeModeChain extends ResizeModeChain {
 
     public CoverResizeModeChain() {

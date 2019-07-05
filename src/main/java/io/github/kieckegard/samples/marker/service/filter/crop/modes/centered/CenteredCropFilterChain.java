@@ -13,11 +13,14 @@ import io.github.kieckegard.samples.marker.service.filter.crop.modes.CropModeCha
 import io.github.kieckegard.samples.marker.service.filter.crop.modes.CropModes;
 import java.awt.image.BufferedImage;
 import org.imgscalr.Scalr;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
+
+@Component(CropModes.CENTERED)
 public class CenteredCropFilterChain extends CropModeChain {
 
     public CenteredCropFilterChain() {

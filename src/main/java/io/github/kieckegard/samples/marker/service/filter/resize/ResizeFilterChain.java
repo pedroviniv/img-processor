@@ -9,16 +9,21 @@ import io.github.kieckegard.samples.marker.service.filter.resize.modes.ResizeMod
 import io.github.kieckegard.samples.marker.service.filter.FilterChain;
 import io.github.kieckegard.samples.marker.service.filter.FilterContext;
 import io.github.kieckegard.samples.marker.service.filter.FilterTypes;
+import io.github.kieckegard.samples.marker.service.filter.resize.modes.ResizeModes;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
+
+@Component(FilterTypes.RESIZE)
 public class ResizeFilterChain extends FilterChain {
     
     private ResizeModeChain resizeModeChain;
 
-    public ResizeFilterChain(final ResizeModeChain resizeModeChain) {
+    public ResizeFilterChain(@Qualifier(ResizeModes.COVER) final ResizeModeChain resizeModeChain) {
         super(FilterTypes.RESIZE);
         this.resizeModeChain = resizeModeChain;
     }

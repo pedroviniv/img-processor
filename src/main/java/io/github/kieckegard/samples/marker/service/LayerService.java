@@ -17,16 +17,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
+
+@Service
 public class LayerService {
 
     private final FilterService filterService;
     private final LayerLoader layerLoader;
 
+    @Autowired
     public LayerService(FilterService filterService, LayerLoader layerLoader) {
         this.filterService = filterService;
         this.layerLoader = layerLoader;
@@ -76,6 +81,7 @@ public class LayerService {
         }
         
         // testSave("merged", container.getContainerContent());
+        container.endDrawing();
 
         return container;
     }

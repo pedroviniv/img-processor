@@ -6,9 +6,9 @@
 package io.github.kieckegard.samples.marker.service.filter.crop.modes;
 
 import io.github.kieckegard.samples.marker.service.filter.crop.CropFilter;
-import io.github.kieckegard.samples.marker.service.filter.Filter;
 import io.github.kieckegard.samples.marker.service.filter.FilterContext;
 import io.github.kieckegard.samples.marker.service.common.GenericChain;
+import java.util.Optional;
 
 /**
  *

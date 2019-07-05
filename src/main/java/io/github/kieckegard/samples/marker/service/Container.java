@@ -5,6 +5,7 @@
  */
 package io.github.kieckegard.samples.marker.service;
 
+import io.github.kieckegard.samples.marker.service.gfx.BufferedImageConverter;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -30,12 +31,12 @@ public class Container {
         }
 
         public Builder containerContent(final BufferedImage value) {
-            this.containerContent = new BufferedImage(value.getWidth(), value.getHeight(), value.getType());
+            final BufferedImage container = new BufferedImage(value.getWidth(), value.getHeight(), value.getType());
+            this.containerContent = new BufferedImageConverter().apply(container);
             return this;
         }
         
         private Graphics2D create(BufferedImage container) {
-            
             
             Graphics2D graphics2D = container.createGraphics();
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
@@ -65,6 +66,16 @@ public class Container {
     
     public void draw(BufferedImage content, Position position) {
         this.graphics2DContainer.drawImage(content, null, position.getDistanceToTheLeft(), position.getDistanceToTheTop());
+    }
+    
+    /**
+     * Ends the drawing "session". 
+     * 
+     * After calling this method, you won't be able to draw in this container.
+     * Be sure you call only after drawing everything you need.
+     */
+    public void endDrawing() {
+        this.graphics2DContainer.dispose();
     }
 
     @Override

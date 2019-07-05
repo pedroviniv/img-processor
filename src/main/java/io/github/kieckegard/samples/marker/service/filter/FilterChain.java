@@ -15,6 +15,9 @@ import io.github.kieckegard.samples.marker.service.common.GenericChain;
 public abstract class FilterChain extends GenericChain<FilterContext> {
     
     private final String type;
+    
+    public static final String RESIZE_IMPL = "RESIZE_IMPL";
+    public static final String CROP_IMPL = "CROP_IMPL";
 
     public FilterChain(String type) {
         this.type = type;

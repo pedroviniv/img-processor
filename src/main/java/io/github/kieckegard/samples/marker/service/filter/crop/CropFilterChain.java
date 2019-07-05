@@ -9,16 +9,19 @@ import io.github.kieckegard.samples.marker.service.filter.crop.modes.CropModeCha
 import io.github.kieckegard.samples.marker.service.filter.FilterChain;
 import io.github.kieckegard.samples.marker.service.filter.FilterContext;
 import io.github.kieckegard.samples.marker.service.filter.FilterTypes;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Pedro Arthur <pfernandesvasconcelos@gmail.com>
  */
+@Component(FilterTypes.CROP)
 public class CropFilterChain extends FilterChain {
     
     private final CropModeChain cropModeChain;
 
-    public CropFilterChain(final CropModeChain cropModeChain) {
+    public CropFilterChain(@Qualifier() final CropModeChain cropModeChain) {
         super(FilterTypes.CROP);
         this.cropModeChain = cropModeChain;
     }
